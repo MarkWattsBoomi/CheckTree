@@ -81,6 +81,8 @@ export default class CheckTree extends FlowComponent {
         else {
             style.height = this.getAttribute("height",'60vh');
         }
+
+        let classes: string = "chtr " + this.getAttribute("classes","");
         
         let nodes: any[] = [];
         this.tree?.children?.forEach((node: CheckTreeNodeElement) =>{
@@ -98,7 +100,7 @@ export default class CheckTree extends FlowComponent {
         
         return (
         <div
-            className="chtr"
+            className={classes}
             style={style}
         >
             {nodes}
