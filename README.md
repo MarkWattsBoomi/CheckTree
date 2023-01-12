@@ -5,13 +5,13 @@
 
 ## Functionality
 
-Provides a configurable tree view with checkbox selectable nodes.
-The tree can be expanded/contracted to drill down.
-Selected nodes are forced to have their parent hierarchy expanded.
-Selecting / deselecting a node will set all child nodes to the same selection state.
-The user can select any item from the tree.
-The tree expects a consistent hierarchical data model with each level having the same attribute names for the properties and the child elements.
-The attributes of the datasource model are configured via attributes described below.
+- Provides a configurable tree view with checkbox selectable nodes.
+- The tree can be expanded/contracted to drill down.
+- Selected nodes are forced to have their parent hierarchy expanded.
+- Selecting / deselecting a node will set all child nodes to the same selection state.
+- The user can select any item from the tree.
+- The tree expects a consistent hierarchical data model with each level having the same attribute names for the properties and the child elements.
+- The attributes of the datasource model are configured via attributes described below.
 
 ## DataSource
 
