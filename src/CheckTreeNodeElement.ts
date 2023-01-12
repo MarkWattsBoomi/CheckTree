@@ -1,15 +1,18 @@
-import { FlowObjectData, FlowObjectDataArray } from "flow-component-model";
+import { eContentType, FlowObjectData, FlowObjectDataArray, FlowObjectDataProperty } from "flow-component-model";
 
 export class CheckTreeNodeElements {
     children: Map<string,CheckTreeNodeElement>;
     config: any;
+    changeHandler: (nodeId: string)=>void;
+
     constructor() {
         this.children = new Map();
     }
 
-    public static parse(objectData: FlowObjectDataArray, config: any) : CheckTreeNodeElements {
+    public static parse(objectData: FlowObjectDataArray, config: any, changeHandler: (nodeId: string)=>void) : CheckTreeNodeElements {
         let nodes: CheckTreeNodeElements = new CheckTreeNodeElements();
         nodes.config = config;
+        nodes.changeHandler = changeHandler;
         objectData.items.forEach((item: FlowObjectData) =>{
             let node: CheckTreeNodeElement = CheckTreeNodeElement.parse(item, nodes, nodes,0);
             nodes.children.set(node.internalId, node);
@@ -27,6 +30,20 @@ export class CheckTreeNodeElements {
         }
         return undefined;
     }
+
+    onChange(nodeId: string) {
+        if(this.changeHandler) {
+            this.changeHandler(nodeId);
+        }
+    }
+
+    makeObjectData(): FlowObjectDataArray {
+        let objData: FlowObjectDataArray = new FlowObjectDataArray();
+        this.children.forEach((child: CheckTreeNodeElement) => {
+            objData.addItem(child.makeObjectData());
+        });
+        return objData;
+    }
 }
 
 export class CheckTreeNodeElement {
@@ -40,6 +57,7 @@ export class CheckTreeNodeElement {
     children: Map<string,CheckTreeNodeElement>
     selected: boolean;
     level: number;
+    objectType: string;
 
     constructor() {
         this.children = new Map();
@@ -47,6 +65,7 @@ export class CheckTreeNodeElement {
 
     public static parse(objectData: FlowObjectData, root: CheckTreeNodeElements, parent: CheckTreeNodeElements | CheckTreeNodeElement, level: number) : CheckTreeNodeElement {
         let node: CheckTreeNodeElement = new CheckTreeNodeElement();
+        node.objectType = objectData.developerName;
         node.level = level + 1;
         node.root = root;
         node.parent = parent;
@@ -59,8 +78,10 @@ export class CheckTreeNodeElement {
         let children: FlowObjectDataArray = objectData.properties[root.config.childrenProperty]?.value as FlowObjectDataArray;
         if(children && children.items.length > 0) {
             children.items.forEach((item: FlowObjectData) => {
-                let child: CheckTreeNodeElement = CheckTreeNodeElement.parse(item, node.root, node, level);
+                // debug if(node.children.size < 1){
+                let child: CheckTreeNodeElement = CheckTreeNodeElement.parse(item, node.root, node, node.level);
                 node.children.set(child.internalId, child);
+                //}
             });
         }
         return node;
@@ -80,6 +101,47 @@ export class CheckTreeNodeElement {
             }
             return undefined;
         }
+    }
+
+    hasSelectedChildren(): boolean {
+        let result: boolean = false;
+        for(let child of this.children.values()) {
+            if(child.selected===true || child.hasSelectedChildren()===true) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    setSelected(selected: boolean, cascade: boolean, preventBubble: boolean) {
+        //if(this.selected !== selected) {
+            this.selected = selected;
+            if(cascade===true) {
+                this.children.forEach((child: CheckTreeNodeElement) => {
+                    child.setSelected(selected, cascade, true)
+                });
+            }
+            if(preventBubble===false) {
+                this.root.onChange(this.internalId);
+            }
+        //}
+        
+    }
+
+    makeObjectData() : FlowObjectData {
+        let objData: FlowObjectData = FlowObjectData.newInstance(this.objectType);
+        objData.internalId = this.internalId;
+        objData.isSelected = this.selected;
+        objData.addProperty(FlowObjectDataProperty.newInstance(this.root.config.idProperty, eContentType.ContentString, this.id));
+        objData.addProperty(FlowObjectDataProperty.newInstance(this.root.config.nameProperty, eContentType.ContentString, this.name));
+        objData.addProperty(FlowObjectDataProperty.newInstance(this.root.config.typeProperty, eContentType.ContentString, this.type));
+        objData.addProperty(FlowObjectDataProperty.newInstance(this.root.config.addressProperty, eContentType.ContentString, this.address));
+        let children: FlowObjectDataArray = new FlowObjectDataArray();
+        for(let child of this.children.values()) {
+            children.addItem(child.makeObjectData());
+        }
+        objData.addProperty(FlowObjectDataProperty.newInstance(this.root.config.childrenProperty, eContentType.ContentList, children));
+        return objData;
     }
     
 }
