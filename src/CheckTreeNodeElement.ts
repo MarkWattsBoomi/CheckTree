@@ -40,7 +40,9 @@ export class CheckTreeNodeElements {
     makeObjectData(): FlowObjectDataArray {
         let objData: FlowObjectDataArray = new FlowObjectDataArray();
         this.children.forEach((child: CheckTreeNodeElement) => {
-            objData.addItem(child.makeObjectData());
+            if(child.selected === true) {
+                objData.addItem(child.makeObjectData());
+            }
         });
         return objData;
     }
@@ -121,6 +123,11 @@ export class CheckTreeNodeElement {
                     child.setSelected(selected, cascade, true)
                 });
             }
+            if(selected===true) {
+                if(this.parent instanceof CheckTreeNodeElement) {
+                    this.parent.setSelected(selected,false,true);
+                }
+            }
             if(preventBubble===false) {
                 this.root.onChange(this.internalId);
             }
@@ -138,7 +145,9 @@ export class CheckTreeNodeElement {
         objData.addProperty(FlowObjectDataProperty.newInstance(this.root.config.addressProperty, eContentType.ContentString, this.address));
         let children: FlowObjectDataArray = new FlowObjectDataArray();
         for(let child of this.children.values()) {
-            children.addItem(child.makeObjectData());
+            if(child.selected === true) {
+                children.addItem(child.makeObjectData());
+            }
         }
         objData.addProperty(FlowObjectDataProperty.newInstance(this.root.config.childrenProperty, eContentType.ContentList, children));
         return objData;

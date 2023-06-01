@@ -7,7 +7,7 @@
 
 - Provides a configurable tree view with checkbox selectable nodes.
 - The tree can be expanded/contracted to drill down.
-- Selected nodes are forced to have their parent hierarchy expanded.
+- Selected nodes are forced to have their parent hierarchy selected and expanded.
 - Selecting / deselecting a node will set all child nodes to the same selection state.
 - The user can select any item from the tree.
 - The tree expects a consistent hierarchical data model with each level having the same attribute names for the properties and the child elements.
@@ -19,7 +19,7 @@ Set the datasource to a list objects of any type, each type must have an id colu
 
 ## State
 
-A list of the same type as the datasource model
+A list of the same type as the datasource model, will contain only the selected tree items
 
 ## Settings
 
