@@ -1,0 +1,44 @@
+{
+  "attributes": {
+    "idProperty": "ID property.  The name of the attribute containing the unique ID of the item.",
+    "nameProperty": "Name property.  The name of the attribute containing the label / name value.",
+    "onChangeHandler": "On Change.  The name of an outcome to trigger when the tree selection changes.",
+    "childrenProperty": "Children property.  The name of the attribute containing any child elements."
+  },
+  "configurationEditors": [
+    "DATA_SOURCE_LIST",
+    "STATE_VALUE"
+  ],
+  "dateCreated": "2023-06-02T08:43:31.6914168+00:00",
+  "dateModified": "2023-06-02T08:43:31.6914368+00:00",
+  "designTimeImageURL": null,
+  "designTimeRenderType": "CHECKBOX-LIST",
+  "developerName": "CheckTree",
+  "developerSummary": "Checkbox Tree",
+  "elementType": "CUSTOM_PAGE_COMPONENT",
+  "icon": "TreeStructure",
+  "id": "a1ba755e-059f-439a-a8a9-1973cfe62ffc",
+  "key": "checktree",
+  "legacyScriptURL": "http://localhost:8080/checktree.js",
+  "legacyStyleSheetURL": "http://localhost:8080/checktree.css",
+  "scriptURL": null,
+  "styleSheetURL": null,
+  "whoCreated": {
+    "email": "markwatts@boomi.com",
+    "firstName": "Mark",
+    "id": "4e027512-3134-4403-91c2-227e8256a7f0",
+    "lastName": "Watts"
+  },
+  "whoModified": {
+    "email": "markwatts@boomi.com",
+    "firstName": "Mark",
+    "id": "4e027512-3134-4403-91c2-227e8256a7f0",
+    "lastName": "Watts"
+  },
+  "whoOwner": {
+    "email": "markwatts@boomi.com",
+    "firstName": "Mark",
+    "id": "4e027512-3134-4403-91c2-227e8256a7f0",
+    "lastName": "Watts"
+  }
+}
