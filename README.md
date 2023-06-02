@@ -37,21 +37,17 @@ Like all components, adding a "classes" attribute will cause that string to be a
 
 The name of the property of the model object containing the primary id.
 
-### labelProperty
+### nameProperty
 
 The name of the property of the model object containing the objects label as displayed in the tree. 
-
-### typeProperty
-
-The name of the property of the model object containing the type of the object - NOT USED.
-
-### addressProperty
-
-The name of the property of the model object containing an address - NOT USED.
 
 ### childrenProperty
 
 The name of the property of the model object containing the object's children. 
+
+### onChangeHandler
+
+The name of an outcome to trigger when the tree selection changes
 
 
 ## Styling
